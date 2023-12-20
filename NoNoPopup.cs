@@ -22,6 +22,7 @@ namespace AltF4Blocker
 
         private void NoNoPopup_Load(object sender, EventArgs e)
         {
+            this.BackColor = Color.Gray;
             this.TransparencyKey = this.BackColor;
 
             pictureBox.Image = Properties.Resources.meme;
