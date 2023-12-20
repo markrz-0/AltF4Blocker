@@ -11,8 +11,7 @@ namespace AltF4Blocker
         private const int WM_KEYDOWN = 0x0100;
         private const int WM_SYSKEYDOWN = 0x0104;
         private const int WM_KEYUP = 0x0101;
-        private const int VK_LMENU = 0xA4; // LAlt
-        private const int VK_RMENU = 0xA5; // RAlt
+        private const int VK_LMENU = 0xA4;
         private const int VK_F4 = 0x73;
 
         private static readonly LowLevelKeyboardProc hook_callback = HookCallback;
@@ -62,7 +61,7 @@ namespace AltF4Blocker
             int vk_code = Marshal.ReadInt32(lParam);
             if (wParam == (IntPtr)WM_KEYDOWN || wParam == (IntPtr)WM_SYSKEYDOWN)
             {
-                if (vk_code == VK_LMENU || vk_code == VK_RMENU)
+                if (vk_code == VK_LMENU)
                 {
                     is_alt_pressed = true;
                 }
@@ -84,7 +83,7 @@ namespace AltF4Blocker
             }
             if (wParam == (IntPtr)WM_KEYUP)
             {
-                if (vk_code == VK_LMENU || vk_code == VK_RMENU)
+                if (vk_code == VK_LMENU)
                 {
                     is_alt_pressed = false;
                 }
