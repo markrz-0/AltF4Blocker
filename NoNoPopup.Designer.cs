@@ -28,26 +28,28 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.label1 = new System.Windows.Forms.Label();
+            this.label = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
-            // label1
+            // label
             // 
-            this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 72F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(28, 114);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(749, 216);
-            this.label1.TabIndex = 0;
-            this.label1.Text = "Nie denerwuj sie\r\n:D";
-            this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.label.AutoSize = true;
+            this.label.Font = new System.Drawing.Font("Microsoft Sans Serif", 72F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label.ForeColor = System.Drawing.SystemColors.Control;
+            this.label.Location = new System.Drawing.Point(28, 114);
+            this.label.Name = "label";
+            this.label.Size = new System.Drawing.Size(749, 216);
+            this.label.TabIndex = 0;
+            this.label.Text = "Nie denerwuj sie\r\n:D";
+            this.label.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // NoNoPopup
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.BackColor = System.Drawing.SystemColors.ActiveCaptionText;
             this.ClientSize = new System.Drawing.Size(800, 450);
-            this.Controls.Add(this.label1);
+            this.Controls.Add(this.label);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "NoNoPopup";
             this.ShowIcon = false;
@@ -62,6 +64,6 @@
 
         #endregion
 
-        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label label;
     }
 }
