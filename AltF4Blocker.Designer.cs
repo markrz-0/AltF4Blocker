@@ -1,6 +1,6 @@
 ﻿namespace AltF4Blocker
 {
-    partial class Main
+    partial class AltF4Blocker
     {
         /// <summary>
         /// Required designer variable.

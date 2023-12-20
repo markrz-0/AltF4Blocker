@@ -11,15 +11,16 @@ namespace AltF4Blocker
         private const int WM_KEYDOWN = 0x0100;
         private const int WM_SYSKEYDOWN = 0x0104;
         private const int WM_KEYUP = 0x0101;
-        private static int VK_LMENU = 0xA4; // LAlt
-        private static int VK_RMENU = 0xA5; // RAlt
-        private static int VK_F4 = 0x73;
-        private static LowLevelKeyboardProc _proc = HookCallback;
-        private static IntPtr _hookID = IntPtr.Zero;
+        private const int VK_LMENU = 0xA4; // LAlt
+        private const int VK_RMENU = 0xA5; // RAlt
+        private const int VK_F4 = 0x73;
+
+        private static readonly LowLevelKeyboardProc hook_callback = HookCallback;
+        private static IntPtr hook_id = IntPtr.Zero;
 
         private static bool is_alt_pressed = false;
-        private static Main main;
-        private static NoNoPopup noNoPopup;
+        private static AltF4Blocker altf4_blocker;
+        private static NoNoPopup no_no_popup;
 
         /// <summary>
         /// The main entry point for the application.
@@ -27,25 +28,25 @@ namespace AltF4Blocker
         [STAThread]
         static void Main()
         {
-            _hookID = SetHook(_proc);
+            hook_id = SetHook(hook_callback);
 
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
-            main = new Main();
-            noNoPopup = new NoNoPopup();
+            altf4_blocker = new AltF4Blocker();
+            no_no_popup = new NoNoPopup();
 
-            Application.Run(main);
+            Application.Run(altf4_blocker);
             
-            UnhookWindowsHookEx(_hookID);
+            UnhookWindowsHookEx(hook_id);
         }
 
-        private static IntPtr SetHook(LowLevelKeyboardProc proc)
+        private static IntPtr SetHook(LowLevelKeyboardProc callback)
         {
-            using (Process curProcess = Process.GetCurrentProcess())
-            using (ProcessModule curModule = curProcess.MainModule)
+            using (Process cur_process = Process.GetCurrentProcess())
+            using (ProcessModule cur_module = cur_process.MainModule)
             {
-                return SetWindowsHookEx(WH_KEYBOARD_LL, proc, GetModuleHandle(curModule.ModuleName), 0);
+                return SetWindowsHookEx(WH_KEYBOARD_LL, callback, GetModuleHandle(cur_module.ModuleName), 0);
             }
         }
 
@@ -55,27 +56,27 @@ namespace AltF4Blocker
         {
             if (nCode < 0)
             {
-                return CallNextHookEx(_hookID, nCode, wParam, lParam);
+                return CallNextHookEx(hook_id, nCode, wParam, lParam);
             }
 
-            int vkCode = Marshal.ReadInt32(lParam);
+            int vk_code = Marshal.ReadInt32(lParam);
             if (wParam == (IntPtr)WM_KEYDOWN || wParam == (IntPtr)WM_SYSKEYDOWN)
             {
-                if (vkCode == VK_LMENU || vkCode == VK_RMENU)
+                if (vk_code == VK_LMENU || vk_code == VK_RMENU)
                 {
                     is_alt_pressed = true;
                 }
-                if (vkCode == VK_F4)
+                if (vk_code == VK_F4)
                 { 
                     if (is_alt_pressed)
                     {
-                        if (!noNoPopup.Visible)
+                        if (!no_no_popup.Visible)
                         {
-                            if(noNoPopup.IsDisposed)
+                            if(no_no_popup.IsDisposed)
                             {
-                                noNoPopup = new NoNoPopup();
+                                no_no_popup = new NoNoPopup();
                             }
-                            noNoPopup.Show(main);
+                            no_no_popup.Show(altf4_blocker);
                         }
                         return (IntPtr)1;
                     }
@@ -83,14 +84,14 @@ namespace AltF4Blocker
             }
             if (wParam == (IntPtr)WM_KEYUP)
             {
-                if (vkCode == VK_LMENU || vkCode == VK_RMENU)
+                if (vk_code == VK_LMENU || vk_code == VK_RMENU)
                 {
                     is_alt_pressed = false;
                 }
             }
 
 
-            return CallNextHookEx(_hookID, nCode, wParam, lParam);
+            return CallNextHookEx(hook_id, nCode, wParam, lParam);
         }
 
         [DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = true)]

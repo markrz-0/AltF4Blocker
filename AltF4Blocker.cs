@@ -3,9 +3,9 @@ using System.Windows.Forms;
 
 namespace AltF4Blocker
 {
-    public partial class Main : Form
+    public partial class AltF4Blocker : Form
     {
-        public Main()
+        public AltF4Blocker()
         {
             InitializeComponent();
         }
