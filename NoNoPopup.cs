@@ -20,6 +20,14 @@ namespace AltF4Blocker
             InitializeComponent();
         }
 
+        public void ShowPopup()
+        {
+            this.Visible = true;
+            label.ForeColor = Color.Red;
+            close_form_timer.Start();
+            change_labels_color_timer.Start();
+        }
+
         private void NoNoPopup_Load(object sender, EventArgs e)
         {
             this.BackColor = Color.Gray;
@@ -27,19 +35,18 @@ namespace AltF4Blocker
 
             pictureBox.Image = Properties.Resources.meme;
 
-            label.ForeColor = Color.Red;
 
             this.Top = (Screen.PrimaryScreen.Bounds.Height - this.Height) / 2;
             this.Left = (Screen.PrimaryScreen.Bounds.Width - this.Width) / 2;
 
             close_form_timer = new System.Timers.Timer(HIDE_AFTER_MILIS);
             close_form_timer.Elapsed += ClosePopup;
-            close_form_timer.Start();
 
             change_labels_color_timer = new System.Windows.Forms.Timer();
             change_labels_color_timer.Interval = HIDE_AFTER_MILIS / COLOR_CHANGE_TICK_COUNT;
             change_labels_color_timer.Tick += ChangeLabelsColorTick;
-            change_labels_color_timer.Start();
+
+            ShowPopup();
         }
 
         private void ChangeLabelsColorTick(object sender, EventArgs e)
@@ -58,7 +65,7 @@ namespace AltF4Blocker
                 this.Invoke(new Action(() =>
                 {
                     change_labels_color_timer.Stop();
-                    this.Close();
+                    this.Visible = false;
                 }));
             }
             catch (Exception ex) { }

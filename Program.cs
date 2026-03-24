@@ -71,11 +71,7 @@ namespace AltF4Blocker
                     {
                         if (!no_no_popup.Visible)
                         {
-                            if(no_no_popup.IsDisposed)
-                            {
-                                no_no_popup = new NoNoPopup();
-                            }
-                            no_no_popup.Show(altf4_blocker);
+                            no_no_popup.ShowPopup();
                         }
                         return (IntPtr)1;
                     }
